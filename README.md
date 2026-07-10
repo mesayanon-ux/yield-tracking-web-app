@@ -1,17 +1,25 @@
-# Yield Analysis Web App V3.3 - Correct FAIL_CODE Logic
+# Yield Analysis Web App V4.1 - XLSX/CSV + SUMMIT aliases
 
-Important logic update from user requirement:
+Updated for the uploaded SUMMIT workbook.
 
-1. Summary must be by week and by operation.
-2. PASSER for each operation is determined by `FAIL_CODE = N/A`.
-3. Operation total is the number of drives entering that operation.
-4. Fail percentage is calculated as:
-   fail code drive count / total drives entering that operation * 100
-5. Operation yield is:
-   N/A count / total operation count * 100
-   Example: 100 drives enter SCOPY and 1 drive fails FAIL_CODE 11049, SCOPY yield = 99%.
-6. Default count mode is Unique Drive per Operation.
-7. Operation order: SCOPY, PRE2, CAL2, FNC2, CRT2, FIN2.
+## Added
+- Accepts `.csv`, `.xlsx`, `.xls`
+- Supports SUMMIT column aliases:
+  - Operation: `DEF_OPERATION` or `OPERATION`
+  - Fail code: `FAIL_DTL_FAIL_CODE` or `FAIL_CODE`
+  - Week: `BRTH_DT_FISCAL_WEEK`, `EVT_DT_FISCAL_WEEK`, `WW`, or `FISCAL_WEEK`
+  - Drive serial: `DRIVE_DIM_DRIVE_SERIAL_NUM` or `DRIVE_SERIAL_NUM`
+  - Run type: `DEF_RUN_TYPE` or `RUN_TYPE`
+  - Event date: `DEF_ETL_LOAD_DATE`, `EVT_DT_ACTUAL_DATE`, `DEF_BIRTH_DATE`, or `EVENT_DATE`
 
-Deploy:
-Replace root `index.html` in the GitHub repository and commit changes.
+## File size guidance
+- CSV: chunk processing, recommended up to 300-500 MB depending on machine.
+- XLSX: loaded into browser memory, recommended up to ~50-100 MB. For larger files, save/export as CSV first.
+
+## Logic
+- PASSER = fail code is `N/A`, `NA`, blank, or `NONE`
+- Failure = any other fail code
+- Yield = PASSER count / operation total * 100
+- Fail detail % = fail code qty / operation total * 100
+
+Deploy by replacing root `index.html` in GitHub Pages repo.
