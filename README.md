@@ -1,17 +1,17 @@
-# Yield Tracking Web App
+# Yield Analysis Web App V2
 
-This is a static URL-ready web app. It can be deployed to Vercel, GitHub Pages, Netlify, or any static hosting service.
+## What's new
+- Upload CSV from browser
+- Analyze EVENT_STATUS P/F
+- Filter by Product, Fiscal Week, Operation
+- Unique-drive latest-event mode or event-row mode
+- Yield trend by Fiscal Week
+- Fail Pareto by Fail Code
+- Fail by Operation
+- Export summary CSV
 
-## Quick Deploy with Vercel
-1. Create a GitHub repository, for example `yield-tracking-web-app`.
-2. Upload `index.html` to the repository root.
-3. Go to Vercel > Add New Project > Import your GitHub repository.
-4. Deploy with default settings.
-5. Vercel will provide a URL like `https://yield-tracking-web-app.vercel.app`.
+## Required columns for best result
+PRODUCT, DRIVE_SERIAL_NUM, FISCAL_WEEK, FAIL_CODE, OPERATION, EVENT_STATUS, EVENT_DATE
 
-## Local Open
-Double-click `index.html` to open locally in a browser.
-
-## Notes
-- Data is stored in browser memory only.
-- Use Export CSV before closing the browser if you want to keep the data.
+## Deployment
+Replace the existing `index.html` in your GitHub repository root with this new file and commit changes. GitHub Pages will update automatically.
