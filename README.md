@@ -1,17 +1,28 @@
-# Yield Analysis Web App V2
+# Yield Analysis Web App V3 - Yield by Operation Matrix
 
-## What's new
-- Upload CSV from browser
-- Analyze EVENT_STATUS P/F
-- Filter by Product, Fiscal Week, Operation
-- Unique-drive latest-event mode or event-row mode
-- Yield trend by Fiscal Week
-- Fail Pareto by Fail Code
-- Fail by Operation
-- Export summary CSV
+This version adds a Yield by Operation matrix similar to the reference report.
 
-## Required columns for best result
-PRODUCT, DRIVE_SERIAL_NUM, FISCAL_WEEK, FAIL_CODE, OPERATION, EVENT_STATUS, EVENT_DATE
+## Main columns used
+- PRODUCT
+- DRIVE_SERIAL_NUM
+- FISCAL_WEEK
+- FAIL_CODE
+- OPERATION
+- FAILED_STATE
+- FAILED_TEST
+- EVENT_STATUS
+- EVENT_DATE
+- RUN_TYPE or BUILD_GROUP for Prime/Rework split
 
-## Deployment
-Replace the existing `index.html` in your GitHub repository root with this new file and commit changes. GitHub Pages will update automatically.
+## Logic
+- Pass = EVENT_STATUS = P
+- Fail = EVENT_STATUS = F
+- Yield % = Pass / (Pass + Fail) * 100
+- Matrix rows:
+  - CUM row = cumulative yield
+  - Operation P row = pass/yield summary per operation
+  - Fail detail rows = fail-code + failed-state/failed-test grouped under each operation
+- Fiscal week columns are generated dynamically from the uploaded CSV.
+
+## Deploy
+Replace the root `index.html` in GitHub repo with this file and Commit changes. GitHub Pages will update automatically.
