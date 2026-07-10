@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Yield Analysis Web App V3 - Yield by Operation</title>
+<title>Yield Analysis Web App V3.3 - Yield by Operation</title>
 <style>
 :root{--blue:#2f6dcc;--darkblue:#0f4fb8;--gray:#e5e5e5;--green:#b9ff9b;--cum:#4f84d8;--line:#111;--bg:#f8fafc;--card:#fff;--ink:#0f172a;--muted:#64748b;--red:#dc2626;--orange:#f97316;--shadow:0 10px 24px rgba(15,23,42,.08)}
 *{box-sizing:border-box}body{margin:0;font-family:Arial,Segoe UI,sans-serif;background:var(--bg);color:var(--ink)}.wrap{max-width:1480px;margin:auto;padding:22px}.top{display:flex;justify-content:space-between;gap:12px;align-items:flex-end;flex-wrap:wrap}.badge{display:inline-block;background:#dbeafe;color:#1d4ed8;border-radius:999px;padding:7px 12px;font-weight:700;font-size:13px}h1{font-size:36px;margin:8px 0}.sub{color:var(--muted);margin:0}.card{background:white;border-radius:18px;box-shadow:var(--shadow);padding:16px;margin-top:16px}.btn{border:0;border-radius:14px;background:#2563eb;color:#fff;padding:10px 14px;font-weight:800;cursor:pointer}.btn.secondary{background:white;color:var(--ink);border:1px solid #e2e8f0}.drop{border:2px dashed #93c5fd;background:#eff6ff;border-radius:18px;padding:18px;text-align:center}.input,select{border:1px solid #cbd5e1;border-radius:12px;padding:9px 11px;background:white;width:100%}.filters{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;align-items:end}.grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}.num{font-size:26px;font-weight:900}.label{font-size:13px;color:#64748b}.greenText{color:#16a34a}.redText{color:#dc2626}.small{font-size:13px;color:#64748b}.ok{background:#ecfdf5;border:1px solid #bbf7d0;color:#166534;border-radius:14px;padding:10px;margin-top:10px}.warn{background:#fff7ed;border:1px solid #fed7aa;color:#9a3412;border-radius:14px;padding:10px;margin-top:10px}.hide{display:none}.matrixWrap{overflow:auto;max-height:72vh;border:1px solid #111}.ym{border-collapse:collapse;font-size:12px;background:white;min-width:1200px;width:100%}.ym th,.ym td{border:1px solid #111;padding:2px 4px;white-space:nowrap;text-align:right}.ym th{background:var(--blue);color:white;font-weight:700;text-align:center}.ym .left{text-align:left}.ym .status{text-align:left}.ym .oprow td{background:#e6e6e6}.ym .opname{font-weight:bold;text-align:left}.ym .cum td{background:var(--cum)!important;color:white;font-weight:bold}.ym .selectedOp td{background:var(--green)!important}.ym .fail td{background:#fff}.ym .dash{color:#333;text-align:center}.legend{display:flex;gap:10px;flex-wrap:wrap}.pill{border-radius:999px;background:#f1f5f9;padding:5px 9px;font-size:12px}.update{text-align:center;font-size:11px;color:#111;margin:6px 0}.chart{height:280px;width:100%}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}.tableWrap{overflow:auto;max-height:420px}table.preview{border-collapse:collapse;width:100%;min-width:900px}table.preview th,table.preview td{border-bottom:1px solid #e2e8f0;padding:7px;font-size:12px;white-space:nowrap}table.preview th{position:sticky;top:0;background:white;color:#64748b}@media(max-width:1000px){.filters,.grid,.grid2{grid-template-columns:1fr}h1{font-size:28px}}
@@ -11,9 +11,9 @@
 </head>
 <body>
 <div class="wrap">
- <div class="top"><div><div class="badge">Yield by Operation Matrix</div><h1>Yield Analysis Web App V3.1</h1><p class="sub">Upload CSV แล้วสร้าง Yield by Operation แบบ Matrix คล้าย report ตัวอย่าง: Operation / Status / Total / Prime / Rework / Fiscal Week | Operation order: SCOPY, PRE2, CAL2, FNC2, CRT2, FIN2</p></div><div><button class="btn secondary" onclick="loadSample()">Load Sample</button> <button class="btn secondary" onclick="resetAll()">Reset</button> <button class="btn" onclick="exportMatrixCsv()">Export Matrix CSV</button></div></div>
+ <div class="top"><div><div class="badge">Yield by Operation Matrix</div><h1>Yield Analysis Web App V3.3</h1><p class="sub">Upload CSV แล้วสรุป Yield by Week / Operation ตามลำดับ SCOPY → PRE2 → CAL2 → FNC2 → CRT2 → FIN2 โดยใช้ FAIL_CODE = N/A เป็น PASSER ของ Operation นั้น</p></div><div><button class="btn secondary" onclick="loadSample()">Load Sample</button> <button class="btn secondary" onclick="resetAll()">Reset</button> <button class="btn" onclick="exportMatrixCsv()">Export Matrix CSV</button></div></div>
  <div class="card"><div id="drop" class="drop"><h2>อัปโหลด CSV</h2><p class="small">รองรับ column: PRODUCT, DRIVE_SERIAL_NUM, FISCAL_WEEK, FAIL_CODE, OPERATION, FAILED_STATE, FAILED_TEST, EVENT_STATUS, EVENT_DATE, RUN_TYPE</p><input class="input" type="file" accept=".csv,text/csv" onchange="handleFile(this.files[0])"></div><div id="fileInfo" class="ok hide"></div><div id="schemaWarn" class="warn hide"></div></div>
- <div class="card"><div class="filters"><label>Product<select id="filterProduct" onchange="render()"><option value="all">All</option></select></label><label>Operation Focus<select id="filterOperation" onchange="render()"><option value="all">All</option></select></label><label>Count Mode<select id="countMode" onchange="render()"><option value="drive">Unique Drive Latest Event</option><option value="event">Event Rows</option></select></label><label>Prime/Rework Column<select id="rwColumn" onchange="render()"><option value="RUN_TYPE">RUN_TYPE</option><option value="BUILD_GROUP">BUILD_GROUP</option><option value="none">All Prime</option></select></label><label>Target Yield %<input id="targetYield" class="input" type="number" value="99.50" step="0.01" oninput="render()"></label><label>Fail Detail Limit<input id="detailLimit" class="input" type="number" value="15" min="1" max="100" oninput="render()"></label></div><p class="small">Logic เริ่มต้น: Pass = EVENT_STATUS=P, Fail = EVENT_STATUS=F, Yield% = Pass/(Pass+Fail). แถวแรกของแต่ละ Operation คือ yield summary status P ตามด้วย fail-code pareto ของ operation นั้น.</p></div>
+ <div class="card"><div class="filters"><label>Product<select id="filterProduct" onchange="render()"><option value="all">All</option></select></label><label>Operation Detail<select id="filterOperation" onchange="render()"><option value="all">Auto SCOPY</option></select></label><label>Count Mode<select id="countMode" onchange="render()"><option value="driveop">Unique Drive per Operation</option><option value="event">Event Rows</option></select></label><label>Prime/Rework Column<select id="rwColumn" onchange="render()"><option value="RUN_TYPE">RUN_TYPE</option><option value="BUILD_GROUP">BUILD_GROUP</option><option value="none">All Prime</option></select></label><label>Target Yield %<input id="targetYield" class="input" type="number" value="99.50" step="0.01" oninput="render()"></label><label>Fail Detail Limit<input id="detailLimit" class="input" type="number" value="15" min="1" max="100" oninput="render()"></label></div><p class="small">Logic: Logic ใหม่: PASSER ของแต่ละ Operation คือ FAIL_CODE = N/A. Total คือจำนวน Drive ที่เข้ามา test ใน Operation นั้น. Fail detail % = จำนวน Drive ที่ Fail Code นั้น / Total Drive ของ Operation นั้น. Default นับแบบ Unique Drive ต่อ Operation.</p></div>
  <div class="grid"><div class="card"><div class="label">Total Denom</div><div id="kDenom" class="num">0</div></div><div class="card"><div class="label">Pass</div><div id="kPass" class="num greenText">0</div></div><div class="card"><div class="label">Fail</div><div id="kFail" class="num redText">0</div></div><div class="card"><div class="label">Yield</div><div id="kYield" class="num">0.00%</div></div><div class="card"><div class="label">DPPM</div><div id="kDppm" class="num" style="color:#f97316">0</div></div></div>
  <div class="card"><div class="legend"><span class="pill">Blue header = Fiscal Week group</span><span class="pill">Green row = selected/focus operation pass row</span><span class="pill">CUM row = cumulative yield by week</span><span class="pill">--- = no denominator</span></div><div class="update" id="lastUpdate">Last Updated: -</div><div class="matrixWrap"><table id="matrix" class="ym"></table></div></div>
  <div class="grid2"><div class="card"><h2>Yield Trend by Fiscal Week</h2><canvas id="trendChart" class="chart"></canvas></div><div class="card"><h2>Fail Pareto by Fail Code</h2><canvas id="paretoChart" class="chart"></canvas></div></div>
@@ -35,9 +35,23 @@ function fillFilters(){fill('filterProduct',[...new Set(rawRows.map(r=>r.PRODUCT
 function fill(id,vals){let s=document.getElementById(id),cur=s.value;s.innerHTML='<option value="all">All</option>'+vals.map(v=>`<option value="${esc(v)}">${esc(v)}</option>`).join('');s.value=vals.includes(cur)?cur:'all'}
 function dateVal(s){let d=new Date(s);return isNaN(d)?0:d.getTime()}
 function latestByDrive(rows){let m=new Map();rows.forEach(r=>{let sn=r.DRIVE_SERIAL_NUM||'';if(!sn)return;let old=m.get(sn);if(!old||dateVal(r.EVENT_DATE)>dateVal(old.EVENT_DATE))m.set(sn,r)});return [...m.values()]}
-function baseRows(){let p=document.getElementById('filterProduct').value;let rows=rawRows.filter(r=>p==='all'||r.PRODUCT===p);return document.getElementById('countMode').value==='drive'?latestByDrive(rows):rows}
+function latestByDriveOperation(rows){
+ let m=new Map();
+ rows.forEach((r,idx)=>{
+   let sn=r.DRIVE_SERIAL_NUM||('ROW_'+idx);
+   let op=r.OPERATION||'Blank';
+   let k=sn+'|'+op;
+   let old=m.get(k);
+   if(!old||dateVal(r.EVENT_DATE)>dateVal(old.EVENT_DATE))m.set(k,r);
+ });
+ return [...m.values()];
+}
+
+function baseRows(){let p=document.getElementById('filterProduct').value;let rows=rawRows.filter(r=>p==='all'||r.PRODUCT===p);return document.getElementById('countMode').value==='driveop'?latestByDriveOperation(rows):rows;}
 function status(r){return (r.EVENT_STATUS||'').toUpperCase()}
-function isPass(r){return status(r)==='P'} function isFail(r){return status(r)==='F'}
+function cleanFailCode(r){return String(r.FAIL_CODE??'').trim().toUpperCase();}
+function isPass(r){let fc=cleanFailCode(r);return fc==='N/A'||fc==='NA'||fc===''||fc==='NONE';}
+function isFail(r){return !isPass(r);}
 function denom(rows){let p=rows.filter(isPass).length,f=rows.filter(isFail).length,d=p+f;return{p,f,d,y:d?p/d*100:null,fr:d?f/d*100:null}}
 function isRework(r){let col=document.getElementById('rwColumn').value;if(col==='none'||!headers.includes(col))return false;let v=(r[col]||'').toUpperCase();return v.includes('RW')||v.includes('REWORK')||v==='R'}
 function fmtPct(v){return v==null?'---':v.toFixed(2)} function fmtQty(v){return v?String(v):'---'}
@@ -46,7 +60,62 @@ function group(rows,keyFn){let m=new Map();rows.forEach(r=>{let k=keyFn(r);if(!m
 function render(){let rows=baseRows();let focus=document.getElementById('filterOperation').value;let weeks=[...new Set(rows.map(r=>r.FISCAL_WEEK||'Blank'))].sort((a,b)=>String(a).localeCompare(String(b),undefined,{numeric:true}));let ops=[...new Set(rows.map(r=>r.OPERATION||'Blank'))].sort(sortOperations);if(focus!=='all')ops=ops.filter(o=>o===focus);let all=denom(rows),target=Number(document.getElementById('targetYield').value)||99.5;document.getElementById('kDenom').textContent=all.d.toLocaleString();document.getElementById('kPass').textContent=all.p.toLocaleString();document.getElementById('kFail').textContent=all.f.toLocaleString();let ky=document.getElementById('kYield');ky.textContent=(all.y??0).toFixed(2)+'%';ky.className='num '+((all.y??0)>=target?'greenText':'redText');document.getElementById('kDppm').textContent=Math.round(all.d?all.f/all.d*1e6:0).toLocaleString();document.getElementById('lastUpdate').textContent='Last Updated: '+new Date().toLocaleString();buildMatrix(rows,weeks,ops,focus);drawTrend(rows,weeks);drawPareto(rows);drawPreview(rows.slice(0,100))}
 function statCells(rows){let total=denom(rows),prime=denom(rows.filter(r=>!isRework(r))),rw=denom(rows.filter(isRework));return `<td>${fmtQty(total.d)}</td><td>${fmtPct(total.y)}</td><td>${fmtQty(prime.d)}</td><td>${fmtPct(prime.y)}</td><td>${fmtQty(rw.d)}</td><td>${fmtPct(rw.y)}</td>`}
 function weekCells(rows,weeks){return weeks.map(w=>{let s=denom(rows.filter(r=>(r.FISCAL_WEEK||'Blank')===w));return `<td>${fmtQty(s.d)}</td><td>${fmtPct(s.y)}</td>`}).join('')}
-function buildMatrix(rows,weeks,ops,focus){let table=document.getElementById('matrix');let head1=`<tr><th rowspan="3">OPERATION</th><th rowspan="3">STATUS</th><th colspan="2" rowspan="2">TOTAL</th><th colspan="2" rowspan="2">PRIME</th><th colspan="2" rowspan="2">REWORK</th><th colspan="${weeks.length*2}">PRIME</th></tr>`;let head2=`<tr>${weeks.map(w=>`<th colspan="2">${esc(w)}</th>`).join('')}</tr>`;let head3=`<tr><th>QTY</th><th>%</th><th>QTY</th><th>%</th><th>QTY</th><th>%</th>${weeks.map(()=>'<th>QTY</th><th>%</th>').join('')}</tr>`;let body='';let detailBody='';let limit=Math.max(1,Number(document.getElementById('detailLimit').value)||15);ops.forEach(op=>{let opr=rows.filter(r=>(r.OPERATION||'Blank')===op);let cls=(focus!=='all'&&focus===op)?'selectedOp':'oprow';body+=`<tr class="${cls}"><td class="opname">${esc(op)}</td><td class="status">P</td>${statCells(opr)}${weekCells(opr,weeks)}</tr>`;let fails=opr.filter(isFail);let gm=group(fails,failLabel);let failArr=[...gm.entries()].map(([name,arr])=>({name,arr,qty:arr.length})).sort((a,b)=>b.qty-a.qty).slice(0,limit);failArr.forEach(x=>{detailBody+=`<tr class="fail"><td class="left">${esc(op)}</td><td class="status">${esc(x.name)}</td>${statCells(x.arr)}${weekCells(x.arr,weeks)}</tr>`})});let cumRows=rows;body+=`<tr class="cum"><td class="opname">CUM</td><td class="status">P</td>${statCells(cumRows)}${weekCells(cumRows,weeks)}</tr>`;body+=detailBody;table.innerHTML=head1+head2+head3+body;matrixCache={weeks,ops,html:table.innerText}}
+function failStatCells(failRows,parentRows){
+ let total=denom(parentRows),primeParent=parentRows.filter(r=>!isRework(r)),rwParent=parentRows.filter(isRework);
+ let pTotal=denom(primeParent),rwTotal=denom(rwParent);
+ let q=failRows.length;
+ let pq=failRows.filter(r=>!isRework(r)).length;
+ let rwq=failRows.filter(isRework).length;
+ let pctTotal=total.d?q/total.d*100:null;
+ let pctPrime=pTotal.d?pq/pTotal.d*100:null;
+ let pctRw=rwTotal.d?rwq/rwTotal.d*100:null;
+ return `<td>${fmtQty(q)}</td><td>${fmtPct(pctTotal)}</td><td>${fmtQty(pq)}</td><td>${fmtPct(pctPrime)}</td><td>${fmtQty(rwq)}</td><td>${fmtPct(pctRw)}</td>`;
+}
+function failWeekCells(failRows,parentRows,weeks){
+ return weeks.map(w=>{
+   let f=failRows.filter(r=>(r.FISCAL_WEEK||'Blank')===w).length;
+   let p=parentRows.filter(r=>(r.FISCAL_WEEK||'Blank')===w);
+   let d=denom(p).d;
+   return `<td>${fmtQty(f)}</td><td>${fmtPct(d?f/d*100:null)}</td>`;
+ }).join('');
+}
+function defaultDetailOp(rows){
+ let available=[...new Set(rows.map(r=>r.OPERATION||'Blank'))];
+ for(let op of OP_ORDER){if(available.includes(op))return op;}
+ return available.sort(sortOperations)[0]||'Blank';
+}
+
+function buildMatrix(rows,weeks,ops,focus){
+ let table=document.getElementById('matrix');
+ let head1=`<tr><th rowspan="3">OPERATION</th><th rowspan="3">STATUS</th><th colspan="2" rowspan="2">TOTAL</th><th colspan="2" rowspan="2">PRIME</th><th colspan="2" rowspan="2">REWORK</th><th colspan="${weeks.length*2}">PRIME</th></tr>`;
+ let head2=`<tr>${weeks.map(w=>`<th colspan="2">${esc(w)}</th>`).join('')}</tr>`;
+ let head3=`<tr><th>QTY</th><th>%</th><th>QTY</th><th>%</th><th>QTY</th><th>%</th>${weeks.map(()=>'<th>QTY</th><th>%</th>').join('')}</tr>`;
+ let body='';
+ let limit=Math.max(1,Number(document.getElementById('detailLimit').value)||15);
+ let summaryOps=[...new Set(rows.map(r=>r.OPERATION||'Blank'))].sort(sortOperations);
+ // 1) Operation summary rows only
+ summaryOps.forEach(op=>{
+   let opr=rows.filter(r=>(r.OPERATION||'Blank')===op);
+   body+=`<tr class="oprow"><td class="opname">${esc(op)}</td><td class="status">P</td>${statCells(opr)}${weekCells(opr,weeks)}</tr>`;
+ });
+ // 2) CUM row after summary rows
+ let cumRows=rows;
+ body+=`<tr class="cum"><td class="opname">CUM</td><td class="status">P</td>${statCells(cumRows)}${weekCells(cumRows,weeks)}</tr>`;
+ // 3) detail operation section: selected operation, default SCOPY
+ let detailOp=(focus==='all')?defaultDetailOp(rows):focus;
+ let detailRows=rows.filter(r=>(r.OPERATION||'Blank')===detailOp);
+ if(detailRows.length){
+   body+=`<tr class="selectedOp"><td class="opname">${esc(detailOp)}</td><td class="status">P</td>${statCells(detailRows)}${weekCells(detailRows,weeks)}</tr>`;
+   let fails=detailRows.filter(isFail);
+   let gm=group(fails,failLabel);
+   let failArr=[...gm.entries()].map(([name,arr])=>({name,arr,qty:arr.length})).sort((a,b)=>b.qty-a.qty).slice(0,limit);
+   failArr.forEach(x=>{
+     body+=`<tr class="fail"><td class="left">${esc(detailOp)}</td><td class="status">${esc(x.name)}</td>${failStatCells(x.arr,detailRows)}${failWeekCells(x.arr,detailRows,weeks)}</tr>`;
+   });
+ }
+ table.innerHTML=head1+head2+head3+body;
+ matrixCache={weeks,ops:summaryOps,html:table.innerText};
+}
 function drawTrend(rows,weeks){let data=weeks.map(w=>({w,...denom(rows.filter(r=>(r.FISCAL_WEEK||'Blank')===w))}));let c=document.getElementById('trendChart'),ctx=c.getContext('2d'),D=devicePixelRatio||1,w=c.clientWidth,h=c.clientHeight;c.width=w*D;c.height=h*D;ctx.scale(D,D);ctx.clearRect(0,0,w,h);if(!data.length)return empty(ctx,w,h);let l=48,r=18,t=20,b=45,pw=w-l-r,ph=h-t-b,min=90,max=100;ctx.strokeStyle='#e2e8f0';ctx.fillStyle='#64748b';ctx.font='12px Arial';for(let i=0;i<=5;i++){let v=min+(max-min)*i/5,y=t+ph-(v-min)/(max-min)*ph;ctx.beginPath();ctx.moveTo(l,y);ctx.lineTo(w-r,y);ctx.stroke();ctx.fillText(v.toFixed(0)+'%',8,y+4)}ctx.strokeStyle='#2563eb';ctx.lineWidth=3;ctx.beginPath();data.forEach((d,i)=>{let x=l+(data.length===1?pw/2:i*pw/(data.length-1)),yv=d.y??0,y=t+ph-(Math.max(min,Math.min(max,yv))-min)/(max-min)*ph;if(i)ctx.lineTo(x,y);else ctx.moveTo(x,y)});ctx.stroke();data.forEach((d,i)=>{let x=l+(data.length===1?pw/2:i*pw/(data.length-1)),yv=d.y??0,y=t+ph-(Math.max(min,Math.min(max,yv))-min)/(max-min)*ph;ctx.fillStyle=yv>=99.5?'#16a34a':'#dc2626';ctx.beginPath();ctx.arc(x,y,5,0,Math.PI*2);ctx.fill();ctx.fillStyle='#334155';ctx.fillText(String(d.w),x-12,h-14);ctx.fillText(yv.toFixed(2),x-15,y-9)})}
 function drawPareto(rows){let fails=rows.filter(isFail);let m=group(fails,r=>r.FAIL_CODE||'Blank');let data=[...m.entries()].map(([name,arr])=>({name,qty:arr.length})).filter(d=>d.name!=='N/A').sort((a,b)=>b.qty-a.qty).slice(0,12);let c=document.getElementById('paretoChart'),ctx=c.getContext('2d'),D=devicePixelRatio||1,w=c.clientWidth,h=c.clientHeight;c.width=w*D;c.height=h*D;ctx.scale(D,D);ctx.clearRect(0,0,w,h);if(!data.length)return empty(ctx,w,h);let l=42,r=16,t=20,b=65,pw=w-l-r,ph=h-t-b,max=Math.max(...data.map(d=>d.qty),1);ctx.strokeStyle='#e2e8f0';ctx.fillStyle='#64748b';ctx.font='12px Arial';for(let i=0;i<=4;i++){let v=max*i/4,y=t+ph-v/max*ph;ctx.beginPath();ctx.moveTo(l,y);ctx.lineTo(w-r,y);ctx.stroke();ctx.fillText(Math.round(v),8,y+4)}data.forEach((d,i)=>{let slot=pw/data.length,bw=slot*.6,x=l+i*slot+slot*.2,y=t+ph-d.qty/max*ph;ctx.fillStyle='#dc2626';ctx.fillRect(x,y,bw,t+ph-y);ctx.fillStyle='#111';ctx.fillText(d.qty,x,y-5);ctx.save();ctx.translate(x+bw/2,h-10);ctx.rotate(-0.65);ctx.fillStyle='#334155';ctx.fillText(d.name,0,0);ctx.restore()})}
 function drawPreview(rows){let cols=headers.slice(0,16);document.getElementById('preview').innerHTML='<table class="preview"><thead><tr>'+cols.map(c=>`<th>${esc(c)}</th>`).join('')+'</tr></thead><tbody>'+rows.map(r=>'<tr>'+cols.map(c=>`<td>${esc(r[c]||'')}</td>`).join('')+'</tr>').join('')+'</tbody></table>'}

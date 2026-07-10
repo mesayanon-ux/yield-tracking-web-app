@@ -1,9 +1,17 @@
-# Yield Analysis Web App V3.1 - Operation Order Update
+# Yield Analysis Web App V3.3 - Correct FAIL_CODE Logic
 
-Changes:
-- Operation summary rows are sorted in this order: SCOPY, PRE2, CAL2, FNC2, CRT2, FIN2.
-- Other operations, if present, are shown after the fixed operation list in alphabetical order.
-- CUM row is shown after operation summary rows and before fail-code detail rows, matching the reference layout.
+Important logic update from user requirement:
+
+1. Summary must be by week and by operation.
+2. PASSER for each operation is determined by `FAIL_CODE = N/A`.
+3. Operation total is the number of drives entering that operation.
+4. Fail percentage is calculated as:
+   fail code drive count / total drives entering that operation * 100
+5. Operation yield is:
+   N/A count / total operation count * 100
+   Example: 100 drives enter SCOPY and 1 drive fails FAIL_CODE 11049, SCOPY yield = 99%.
+6. Default count mode is Unique Drive per Operation.
+7. Operation order: SCOPY, PRE2, CAL2, FNC2, CRT2, FIN2.
 
 Deploy:
-Replace root `index.html` in GitHub with this file and commit changes.
+Replace root `index.html` in the GitHub repository and commit changes.
