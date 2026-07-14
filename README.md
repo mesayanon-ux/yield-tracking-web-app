@@ -1,1 +1,1 @@
-V4.8 adds four configurable nested attribute levels and hierarchical merged headers.
+V4.8.1 full replacement. Includes multi-level yield, media decode, and HSA_PART_NUM decode.
