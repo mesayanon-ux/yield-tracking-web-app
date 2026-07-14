@@ -1,1 +1,1 @@
-V4.7 adds MEDIA_PART_NUM decoding while preserving raw part numbers.
+V4.8 adds four configurable nested attribute levels and hierarchical merged headers.
