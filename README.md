@@ -1,5 +1,12 @@
-# Yield Analysis V4.2
+# Yield Analysis V4.3
 
-WW is derived from DRIVE_SBR_NUM / DEF_DRIVE_SBR_NUM using the pattern `^SM(\d{2})`. Example: SM50XYDC -> WW50.
-
-Deploy by replacing the root index.html in GitHub Pages.
+Updates:
+- Removed the STATUS column from the matrix.
+- Removed the TOTAL QTY/% columns from the matrix.
+- Matrix now shows OPERATION followed directly by WW QTY/% columns.
+- Operation Detail supports:
+  - All Operations
+  - Auto First Operation
+  - One selected operation
+- When All Operations is selected, each operation's fail-code details are displayed below its highlighted operation row.
+- WW continues to come from DRIVE_SBR_NUM / DEF_DRIVE_SBR_NUM using SMxx, for example SM50XYDC -> WW50.
