@@ -1,1 +1,1 @@
-V4.8.1 full replacement. Includes multi-level yield, media decode, and HSA_PART_NUM decode.
+V4.8.2 full replacement. MEDIA_PART_NUM and HSA_PART_NUM show decoded names only when mappings exist; unknown values show original raw values.
