@@ -1,21 +1,10 @@
-# Yield Analysis V4.5 - Yield by Attribute
+# Yield Analysis V4.6 - Attribute Pivot Matrix
 
-Added Yield by Attribute analysis.
-
-Default attribute:
-- MEDIA_PART_NUM
-
-Also supports:
-- HSA_PART_NUM
-- PRE_AMP_VENDOR
-- FSA_SUPPLIER_0
-- DRIVE_PART_NUM
-- RUN_TYPE
-
-Calculation by attribute:
-- Group by Attribute + selected Operation + derived WW.
-- Total = unique analysis records in the group.
-- Pass = fail code is N/A / NA / blank / NONE.
-- Yield = Pass / Total * 100.
-
-The existing multi-operation selection, WW from DRIVE_SBR_NUM, operation yield, fail details, and cumulative yield remain available.
+Attribute display now follows the supplied example:
+- One section per derived WW.
+- Attribute values are horizontal column groups.
+- Each attribute value has QTY and % subcolumns.
+- Rows show selected operations in production-flow order.
+- CUM YIELD is calculated by multiplying operation yields from top to bottom separately for each attribute value.
+- Fail-code detail rows appear below the operation summaries.
+- Default attribute is MEDIA_PART_NUM; other supported attributes remain selectable.
