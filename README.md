@@ -1,11 +1,21 @@
-# Yield Analysis V4.4
+# Yield Analysis V4.5 - Yield by Attribute
 
-Updates:
-- Operation selection uses checkboxes and supports multiple operations.
-- Quick buttons: normal operations only, starred operations only, all, and none.
-- Default selection includes only operations that do not start with `*`.
-- Cumulative yield is calculated in selected production-flow order from top to bottom.
-- For each WW: `CUM Yield = Operation 1 Yield × Operation 2 Yield × ... × Operation n Yield`.
-- The matrix shows QTY, Operation Yield %, and Cumulative Yield % for each selected operation.
-- Fail-code details are displayed for all selected operations.
-- WW is still derived from `DRIVE_SBR_NUM` / `DEF_DRIVE_SBR_NUM`, for example `SM50XYDC -> WW50`.
+Added Yield by Attribute analysis.
+
+Default attribute:
+- MEDIA_PART_NUM
+
+Also supports:
+- HSA_PART_NUM
+- PRE_AMP_VENDOR
+- FSA_SUPPLIER_0
+- DRIVE_PART_NUM
+- RUN_TYPE
+
+Calculation by attribute:
+- Group by Attribute + selected Operation + derived WW.
+- Total = unique analysis records in the group.
+- Pass = fail code is N/A / NA / blank / NONE.
+- Yield = Pass / Total * 100.
+
+The existing multi-operation selection, WW from DRIVE_SBR_NUM, operation yield, fail details, and cumulative yield remain available.
