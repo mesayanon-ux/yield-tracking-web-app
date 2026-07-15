@@ -1,1 +1,1 @@
-V4.8.6 full replacement: V4.8.5 CMS_CONFIG first 10 characters plus EC detail rows directly below each selected operation. EC % uses the operation input within each hierarchy group as denominator.
+V4.8.7: Yield summary remains intact at the top. A separate EC detail panel below allows one operation to be selected and displays its pass/yield row followed by ranked FAIL_CODE rows. EC percentage uses total input to the selected operation for each hierarchy group.
