@@ -1,1 +1,1 @@
-V4.8.9: Based on V4.8.8. Adds recovery rules only to Summary through a CUM YIELD RECOVERY row. Operation Detail remains raw/unadjusted. Includes context cache, separate summary/detail rendering, 200 ms debounce, and Calculating overlay.
+V4.9.0 dual summaries: Raw Yield Summary, Recovery Rule Note with Applied/Not selected/Not found status, Recovery Yield Summary, and raw Operation Detail. Includes cache, split rendering, debounce and Calculating overlay.
