@@ -1,1 +1,1 @@
-CMS_CONFIG uses only its first 10 characters before grouping and display. Full replacement based on the V4.8.4 hierarchy model.
+V4.8.6 full replacement: V4.8.5 CMS_CONFIG first 10 characters plus EC detail rows directly below each selected operation. EC % uses the operation input within each hierarchy group as denominator.
